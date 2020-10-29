@@ -14,7 +14,7 @@ except ImportError:
 
 def run_maintainer():
     """
-    通过请求网站url检验ip是否可用
+    下载器主入口
     :return:
     """
     download = maintain_download()
