@@ -81,15 +81,16 @@ class maintain_download(object):
         collection = db.youguo_video
         user_list = collection.find({"$or": [{"resolution": "720P"}, {"resolution": "1080P"}]},
                                     no_cursor_timeout=True).sort([("insert_time", -1)]).limit(200)
-        video_urls = []
+        # video_urls = []
         for item in user_list:
-            video_urls.append((item["url"],item["title"]))
+            # video_urls.append((item["url"],item["title"]))
+            video_urls = [(item["url"], item["title"])]
 
-        try:
-            await asyncio.gather(*[self.get_html(pattern[0]) for pattern in video_urls])
-            await asyncio.sleep(0.1)
-        except Exception as err:
-            logger.error(err)
+            try:
+                await asyncio.gather(*[self.get_html(pattern) for pattern in video_urls])
+                await asyncio.sleep(3)
+            except Exception as err:
+                logger.error(err)
 
     async def save_flag(self, img, filename):
         self.show(img)
@@ -107,23 +108,21 @@ class maintain_download(object):
         str = re.sub("[\!\%\[\]\,\。\?\'\"\@\*\&\、\:\;\$\\\\/]", "", str)
         return str
 
-    async def get_html(self, url):
-        url = url.replace('"', "")
-        url = url.replace("orj360", 'large')
-        logger.info(f"正在下载 : {url}")
+    async def get_html(self, pattern):
+        logger.info(f"正在下载 : {pattern}")
         # max_keepalive，允许的保持活动连接数或 None 始终允许。（预设10）
         # max_connections，允许的最大连接数或 None 无限制。（默认为100）
         limits = httpx.Limits(max_keepalive_connections=self.max_keepalive_connections,
                               max_connections=self.max_connections)
-        name = self.re_sting_title(url.replace("https://qnam.smzdm.com/", ""))
-        name = self.re_sting_title(url.replace("https://wx2.sinaimg.cn/large/", ""))
+        url = pattern[0]
+        name = self.re_sting_title(pattern[1]) + ".mp4"
         try:
             async with httpx.AsyncClient(limits=limits, timeout=self.time_out) as client:
                 resp = await client.get(url)
                 assert resp.status_code == 200
                 await self.save_flag(resp.read(), name)
         except Exception as err:
-            logger.error(f"下载失败 url : {url}")
+            logger.error(f"下载失败 url : {url}, err: {err}")
             return
         else:
             self.num += 1

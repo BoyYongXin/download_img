@@ -1,7 +1,8 @@
 # -*-coding=utf-8 -*-
 import sys
 import asyncio
-from async_download_data import maintain_download
+# from async_download_data import maintain_download
+from async_download_data_video import maintain_download
 from loguru import logger
 
 try:
