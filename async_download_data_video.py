@@ -50,8 +50,7 @@ class maintain_download(object):
     @debug
     async def maintain_download(self):
 
-        # MONGO_HOST = 'rs_cralwer_01.mongo.int.yidian-inc.com:27017,rs_cralwer_02.mongo.int.yidian-inc.com:27017,rs_cralwer_03.mongo.int.yidian-inc.com:27017'
-        # MONGO_HOST = 'rs_xuanpin_01.mongo.int.yidian-inc.com:27017,rs_xuanpin_02.mongo.int.yidian-inc.com:27017,rs_xuanpin_03.mongo.int.yidian-inc.com:27017'
+        # MONGO_HOST = 'xxxx:27017'
         # mongo_conn = pymongo.MongoClient(MONGO_HOST, connect=False)
         # db = mongo_conn.xuanpin
         # # collection = db.zhidemai_news
@@ -74,7 +73,7 @@ class maintain_download(object):
         #     except Exception as err:
         #         logger.error(err)
         ## 油果视频 ##
-        MONGO_HOST = 'rs_xuanpin_01.mongo.int.yidian-inc.com:27017,rs_xuanpin_02.mongo.int.yidian-inc.com:27017,rs_xuanpin_03.mongo.int.yidian-inc.com:27017'
+        MONGO_HOST = 'XXXX:27017'
         mongo_conn = pymongo.MongoClient(MONGO_HOST, connect=False)
         db = mongo_conn.xuanpin
         # collection = db.zhidemai_news
